@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
@@ -27,9 +28,9 @@ public class TimePickerFragment extends DialogFragment {
     private TimePicker mTimePicker;
     private Date mDate;
 
-    public static TimePickerFragment newInstance(Time time){
+    public static TimePickerFragment newInstance(Date date){
         Bundle args = new Bundle();
-        args.putSerializable(ARG_TIME, time);
+        args.putSerializable(ARG_TIME, date);
 
         TimePickerFragment fragment = new TimePickerFragment();
         fragment.setArguments(args);
@@ -38,13 +39,12 @@ public class TimePickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-        Time time = (Time) getArguments().getSerializable(ARG_TIME);
+        mDate = (Date) getArguments().getSerializable(ARG_TIME);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(time);
-        int hour = calendar.get(Calendar.HOUR);
+        calendar.setTime(mDate);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        //int second = calendar.get(Calendar.SECOND);
 
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_time, null);
@@ -62,12 +62,14 @@ public class TimePickerFragment extends DialogFragment {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 mDate = new GregorianCalendar(year, month, day, hourOfDay, minute).getTime();
+
+                Log.d("DEBUUUUUUG", mDate.toString());
             }
         });
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setTitle("Date of crime")
+                .setTitle("Time of crime")
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                             @Override
