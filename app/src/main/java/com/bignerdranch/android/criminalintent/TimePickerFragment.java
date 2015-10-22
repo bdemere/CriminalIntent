@@ -1,3 +1,5 @@
+//challenge complete
+//look at the previous commit
 package com.bignerdranch.android.criminalintent;
 import android.app.Activity;
 import android.content.DialogInterface;
