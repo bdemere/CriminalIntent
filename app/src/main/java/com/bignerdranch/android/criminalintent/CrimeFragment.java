@@ -85,12 +85,11 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mTimeButton = (Button) v.findViewById(R.id.crime_date);
-        updateTime();
+        mTimeButton = (Button) v.findViewById(R.id.crime_time);
         mTimeButton.setText(mCrime.getDate().toString());
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment.
                         newInstance(mCrime.getDate());
@@ -112,30 +111,22 @@ public class CrimeFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode != Activity.RESULT_OK){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
-
-        if(requestCode == REQUEST_DATE){
-            Date date = (Date) data
-                    .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+        Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+        if (requestCode == REQUEST_DATE) {
             mCrime.setDate(date);
             updateDate();
-            mDateButton.setText(mCrime.getDate().toString());
         }
-        if(requestCode == REQUEST_TIME){
-            Time time = (Time) data
-                    .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
-            mCrime.setDate(time);
-            updateTime();
-            mTimeButton.setText(mCrime.getTime().toString());
+        if (requestCode == REQUEST_TIME) {
+            mCrime.setDate(date);
+            updateDate();
         }
     }
-    private void updateDate(){
+
+    private void updateDate() {
         mDateButton.setText(mCrime.getDate().toString());
-    }
-    private void updateTime(){
-        mTimeButton.setText(mCrime.getTime().toString());
     }
 }

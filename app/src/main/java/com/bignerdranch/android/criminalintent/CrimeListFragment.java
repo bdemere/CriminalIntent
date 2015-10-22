@@ -55,6 +55,7 @@ public class CrimeListFragment extends Fragment {
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
+        private TextView mTimeTextView;
         private CheckBox mSolvedCheckBox;
 
         private Crime mCrime;

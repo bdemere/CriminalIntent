@@ -25,6 +25,7 @@ public class TimePickerFragment extends DialogFragment {
             "time";
 
     private TimePicker mTimePicker;
+    private Date mDate;
 
     public static TimePickerFragment newInstance(Time time){
         Bundle args = new Bundle();
@@ -49,8 +50,20 @@ public class TimePickerFragment extends DialogFragment {
                 .inflate(R.layout.dialog_time, null);
 
         mTimePicker = (TimePicker) v.findViewById(R.id.dialog_time_time_picker);
-        mTimePicker.setMinute(minute);
-        mTimePicker.setHour(hour);
+        mTimePicker.setCurrentMinute(minute);
+        mTimePicker.setCurrentMinute(hour);
+
+        mTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mDate);
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                mDate = new GregorianCalendar(year, month, day, hourOfDay, minute).getTime();
+            }
+        });
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
@@ -59,21 +72,17 @@ public class TimePickerFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                int hour = mTimePicker.getHour();
-                                int minute = mTimePicker.getMinute();
-                                long milliTime = hour * 60 + minute;
-                                Time time = new Time(milliTime);
-                                sendResult(Activity.RESULT_OK, time);
+                                sendResult(Activity.RESULT_OK, mDate);
                             }
                         })
                 .create();
     }
-    private void sendResult(int resultCode, Time time) {
+    private void sendResult(int resultCode, Date date) {
         if(getTargetFragment() == null) {
             return;
         }
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_TIME, time);
+        intent.putExtra(EXTRA_TIME, date);
 
         getTargetFragment()
                 .onActivityResult(getTargetRequestCode(), resultCode, intent);
