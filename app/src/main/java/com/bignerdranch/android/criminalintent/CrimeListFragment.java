@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -24,12 +25,19 @@ public class CrimeListFragment extends Fragment {
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
 
+    private Button mNewCrime;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+        View view;
 
-        if(savedInstanceState != null){
+        View emptyView;
+        emptyView = inflater.inflate(R.layout.fragment_crime, container, false);
+
+        view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+
+        if (savedInstanceState != null) {
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
 
@@ -38,7 +46,6 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
-
         return view;
     }
 
@@ -115,8 +122,10 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();
+            mAdapter.setCrimes(crimes);
         }
         updateSubtitle();
+
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder 
@@ -176,5 +185,9 @@ public class CrimeListFragment extends Fragment {
         public int getItemCount() {
             return mCrimes.size();
         }
+        public void setCrimes(List<Crime> crimes) {
+            mCrimes = crimes;
+        }
+
     }
 }
