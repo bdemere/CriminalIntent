@@ -15,16 +15,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * Created by bubujay on 10/21/15.
+ */
 public class DatePickerFragment extends DialogFragment {
-
     public static final String EXTRA_DATE =
             "com.bignerdranch.android.criminalintent.date";
-
-    private static final String ARG_DATE = "date";
-
+    private static final String ARG_DATE =
+            "date";
     private DatePicker mDatePicker;
 
-    public static DatePickerFragment newInstance(Date date) {
+    public static DatePickerFragment newInstance(Date date){
         Bundle args = new Bundle();
         args.putSerializable(ARG_DATE, date);
 
@@ -32,7 +33,6 @@ public class DatePickerFragment extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Date date = (Date) getArguments().getSerializable(ARG_DATE);
@@ -62,12 +62,13 @@ public class DatePickerFragment extends DialogFragment {
                                 Date date = new GregorianCalendar(year, month, day).getTime();
                                 sendResult(Activity.RESULT_OK, date);
                             }
-                })
+                        })
                 .create();
     }
 
-    private void sendResult(int resultCode, Date date) {
-        if (getTargetFragment() == null) {
+
+    private void sendResult(int resultCode, Date date){
+        if(getTargetFragment() == null){
             return;
         }
 
@@ -76,5 +77,6 @@ public class DatePickerFragment extends DialogFragment {
 
         getTargetFragment()
                 .onActivityResult(getTargetRequestCode(), resultCode, intent);
+
     }
 }
